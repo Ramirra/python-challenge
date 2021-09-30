@@ -3,26 +3,25 @@ import os
 #module for reading csv file
 import csv
 
-#declare and initialize variables for calculations
+#declares and initializes variables for calculations
 totalMonths = 0
 totalRevenue = 0
 
-#creates list for monthly changes, greatest increase/decrease months + values
+#creates list for monthly changes and months
 monthlyChanges = []
 months = []
-
 
 #makes a reference to the path with the budget data
 csvpath = os.path.join("..","python-challenge", "PyBank", "Resources", "budget_data.csv")
 print(csvpath)
 
-#creates ouptput file for resutls
+#creates ouptput file for results
 outputfile = os.path.join("..", "python-challenge", "PyBank", "Analysis", "budget_data_analysis.text" )
 
 #opens the csv file
 with open(csvpath) as csvfile:
 
-    #set up the reader object
+    #sets up the reader object
     csvreader = csv.reader(csvfile, delimiter=",")
 
     #reads the header info
@@ -31,7 +30,7 @@ with open(csvpath) as csvfile:
     #moves to the next row of data
     firstRow = next(csvreader)
 
-    #calcuates the number of months
+    #adds 1 to the total # of months
     totalMonths = totalMonths + 1
 
     #calculates the total revenue 
@@ -40,10 +39,12 @@ with open(csvpath) as csvfile:
     #establish value of previous revenue
     previousRevenue = float(firstRow[1])
 
-   
+    #for each row
     for row in csvreader:
+        #add 1 to the total # of months
         totalMonths = totalMonths + 1
 
+        #adds to the total revenue/ calculates net amount
         totalRevenue = totalRevenue + float(row[1])
     
         #calculates the net change between months
@@ -61,6 +62,7 @@ with open(csvpath) as csvfile:
 #calculates the average net change per month
 averageChange = sum(monthlyChanges) / len(monthlyChanges)
 
+#creates list for greatest increase/decrease months + values
 greatestIncrease = [months[0], monthlyChanges[0]]
 greatestDecrease = [months[0], monthlyChanges[0]]
 
@@ -77,16 +79,16 @@ for m in range(len(monthlyChanges)):
         greatestDecrease[0] = months[m]
     
 
-#print outputs to the terminal
+#prints outputs to the terminal
 print(f"Financial Analysis")
 print(f"-------------------")
 print(f"Total Months: {totalMonths}")
 print(f"Total: ${totalRevenue:,.2f}")
 print(f"Average Change: ${averageChange:,.2f}")
 print(f"Greatest Increase in Profits: {greatestIncrease[0]}, ${greatestIncrease[1]:,.2f}")
-print(f"Greatest Decrease in Profits: {greatestDecrease[0]}, ${greatestIncrease[1]:,.2f}")
+print(f"Greatest Decrease in Profits: {greatestDecrease[0]}, ${greatestDecrease[1]:,.2f}")
 
-#export to text file
+#exports to text file
 with open(outputfile, "w") as textfile:
     textfile.write(f"Financial Analysis \n")
     textfile.write(f"------------------- \n")
@@ -94,4 +96,4 @@ with open(outputfile, "w") as textfile:
     textfile.write(f"Total: ${totalRevenue:,.2f} \n")
     textfile.write(f"Average Change: $ {averageChange:,.2f}\n")
     textfile.write(f"Greatest Increase in Profits: {greatestIncrease[0]}, ${greatestIncrease[1]:,.2f} \n")
-    textfile.write(f"Greatest Decrease in Profits: {greatestDecrease[0]}, ${greatestIncrease[1]:,.2f}")
+    textfile.write(f"Greatest Decrease in Profits: {greatestDecrease[0]}, ${greatestDecrease[1]:,.2f}")
