@@ -43,19 +43,25 @@ with open(csvpath) as csvfile:
             #the candidate is already listed so only add the vote
             candidatesVotes[row[2]] +=1
 
+#creates string variable for vote output
 voteOutput = "" 
+
+#for each candidate in the dictionary
 for candidates in candidatesVotes:
     #votes for each candidate
     votes = candidatesVotes.get(candidates)
+    #percentage of total votes for each candidate
     votesPct = float(votes) / float(totalVotes) * 100.00
     
+    #fills variable with results from above
     voteOutput += f"{candidates}: {votesPct:,.2f}%, ({votes}) \n"
-
+    
+    #determines and stores the winning candidate
     if votes > winningCount:
         winningCount = votes
         winningCandidate = candidates
 
- #prints the result in the terminal   
+#prints the result in the terminal   
 print("\n")
 print("Elections Results")
 print("-------------------------")
@@ -65,7 +71,7 @@ print(voteOutput)
 print("-------------------------")
 print(f"Winner: {winningCandidate} \n \n")
 
-#export to text file
+#exportsto text file
 with open(outputfile, "w") as textfile:
     textfile.write("\n")
     textfile.write("Elections Results \n")
