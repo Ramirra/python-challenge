@@ -7,13 +7,15 @@ import csv
 totalVotes = 0
 candidates = []
 candidatesVotes = {}
+winningCount = 0 
+winningCandidate = ""
 
 #makes a reference to the path with the election data
 csvpath = os.path.join("..","python-challenge", "PyPoll", "Resources", "election_data.csv")
 print(csvpath)
 
 #creates ouptput file for results
-outputfile = os.path.join("..", "python-challenge", "PyBank", "Analysis", "election_data_analysis.text" )
+outputfile = os.path.join("..", "python-challenge", "PyPoll", "Analysis", "election_data_analysis.text" )
 
     #opens the csv file
 with open(csvpath) as csvfile:
@@ -41,9 +43,35 @@ with open(csvpath) as csvfile:
             #the candidate is already listed so only add the vote
             candidatesVotes[row[2]] +=1
 
-        
+voteOutput = "" 
+for candidates in candidatesVotes:
+    #votes for each candidate
+    votes = candidatesVotes.get(candidates)
+    votesPct = float(votes) / float(totalVotes) * 100.00
+    
+    voteOutput += f"{candidates}: {votesPct:,.2f}%, ({votes}) \n"
+
+    if votes > winningCount:
+        winningCount = votes
+        winningCandidate = candidates
+
+ #prints the result in the terminal   
+print("\n")
 print("Elections Results")
-print("--------------------")
+print("-------------------------")
 print(f"Total Votes: {totalVotes}")
-print("--------------------")
-print(candidatesVotes)
+print("-------------------------")
+print(voteOutput)
+print("-------------------------")
+print(f"Winner: {winningCandidate} \n \n")
+
+#export to text file
+with open(outputfile, "w") as textfile:
+    textfile.write("\n")
+    textfile.write("Elections Results \n")
+    textfile.write("------------------------- \n")
+    textfile.write(f"Total Votes: {totalVotes} \n")
+    textfile.write("------------------------- \n")
+    textfile.write(voteOutput)
+    textfile.write("------------------------- \n")
+    textfile.write(f"Winner: {winningCandidate} \n \n")
